@@ -67,13 +67,13 @@ public class ChannelService {
     }
 
     public UserListResponseDto readUsers(String nickname) {
+        List<UserListDto> userLists = new ArrayList<>();
         List<User> users = userRepository.findAllByNicknameContaining(nickname);
         for(User user : users){
-            UserListDto userListDto = new UserListDto(user.getNickname());
-
+            UserListDto userListDto = new UserListDto(user.getId(), user.getUsername(), user.getNickname(),user.getIconUrl());
+            userLists.add(userListDto);
         }
-
-
+        return UserListResponseDto userListResponseDto = new UserListResponseDto(userLists)
 
     }
 

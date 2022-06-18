@@ -77,7 +77,7 @@ public class ChannelService {
 
     }
 
-    public ChannelListResponseDto<T> readChannels() {//받아온 유저로 채널 꺼내온다
+    public ChannelListResponseDto<?> readChannels() {//받아온 유저로 채널 꺼내온다
         List<UserChannelListDto> userChannelList = new ArrayList<>();
         List<Channel> channels = channelRepository.findAllbyUser(user);
         for(Channel channel : channels){
@@ -90,7 +90,7 @@ public class ChannelService {
             UserChannelListDto listDtoIsOwnerFalseDto = new UserChannelListDto(channel.getId(),channel.getChannelName(),channel.isPrivate(),isOwner);
             userChannelList.add(listDtoIsOwnerFalseDto);
         }
-        return ChannelListResponseDto <T> responseDto = new ChannelListResponseDto(userChannelList);
+        return new ChannelListResponseDto<>(userChannelList);
 
 
     }

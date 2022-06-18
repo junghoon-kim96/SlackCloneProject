@@ -1,10 +1,14 @@
 package com.sparta.slackcloneproject.medel;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
 
+@NoArgsConstructor
+@Getter
 @Entity(name = "users")
 public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,4 +32,9 @@ public class User {
     @JoinColumn(name = "user_id")
     private List<InvitedUserChannel> invitedUserChannels;
 
+    public User(String s, String s1, String hi) {
+        this.username = s;
+        this.nickname = hi;
+        this.password = s1;
+    }
 }

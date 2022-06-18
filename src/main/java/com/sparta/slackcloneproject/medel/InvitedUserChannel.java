@@ -1,7 +1,12 @@
 package com.sparta.slackcloneproject.medel;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
+@NoArgsConstructor
+@Getter
 @Entity
 public class InvitedUserChannel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,8 +17,12 @@ public class InvitedUserChannel {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "channel_id")
-    private Channel channel;
+//    @ManyToOne
+//    @JoinColumn(name = "channel_id")
+//    private Channel channel;
+
+    public InvitedUserChannel(User user){
+        this.user = user;
+    }
 
 }

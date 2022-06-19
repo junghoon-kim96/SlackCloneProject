@@ -1,10 +1,15 @@
-package com.sparta.slackcloneproject.medel;
+package com.sparta.slackcloneproject.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sparta.slackcloneproject.dto.SignUpRequestDto;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
 
+@NoArgsConstructor
+@Getter
 @Entity(name = "users")
 public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,5 +32,12 @@ public class User {
     @OneToMany
     @JoinColumn(name = "user_id")
     private List<InvitedUserChannel> invitedUserChannels;
+
+    public User (SignUpRequestDto requestDto) {
+        this.username = requestDto.getUsername();
+        this.nickname = requestDto.getNickname();
+        this.iconUrl = requestDto.getIconUrl();
+        this.password = requestDto.getPassword();
+    }
 
 }

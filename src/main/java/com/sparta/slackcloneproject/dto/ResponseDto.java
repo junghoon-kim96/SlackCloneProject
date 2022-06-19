@@ -15,4 +15,9 @@ public class ResponseDto<T> {
     private boolean response;
     private String message;
     private List<T> list;
+
+    public ResponseDto (boolean response, String message) {
+        this.response = response;
+        this.message = message;
+    }
 }

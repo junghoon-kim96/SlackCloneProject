@@ -22,6 +22,7 @@ public class Message extends Timestamped {
 
     @ManyToOne
     private Channel channel;
+
     @Column
     private String message;
 

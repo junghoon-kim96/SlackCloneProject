@@ -28,8 +28,9 @@ public class ChannelService {
         this.invitedUserChannelRepository = invitedUserChannelRepository;
     }
 
+    //채널 생성
     @Transactional
-    public void createChannel(ChannelRequestDto channelRequestDto, User user) {
+    public ResponseDto<?> createChannel(ChannelRequestDto channelRequestDto, User user) {
         List<InvitedUserChannel> invitedUserChannels = new ArrayList<>();
 
         InvitedUserChannel invitedUserChannelMade = new InvitedUserChannel(user);
@@ -37,7 +38,7 @@ public class ChannelService {
         List<Long> userList = channelRequestDto.getUserList();
         for (Long userId : userList) {
             User belongedUser = userRepository.findById(userId)
-                    .orElseThrow(() -> new NullPointerException("해당 아이디가 존재하지 않습니다."));
+                    .orElseThrow(() -> new NullPointerException("해당 유저 아이디가 존재하지 않습니다."));
             InvitedUserChannel invitedUserChannel = new InvitedUserChannel(belongedUser);
             invitedUserChannels.add(invitedUserChannel);
         }
@@ -45,6 +46,8 @@ public class ChannelService {
         invitedUserChannelRepository.saveAll(invitedUserChannels);
         Channel channel = new Channel(channelRequestDto, invitedUserChannels, user);
         channelRepository.save(channel);
+
+        return new ResponseDto<>(true, "성공");
     }
 
 //    @Transactional
@@ -65,72 +68,78 @@ public class ChannelService {
 //        channelRepository.save(channel);
 //    }
 
-    public UserListResponseDto readUsers(String nickname) {
+    //초대 할 유저정보 조회
+    @Transactional(readOnly = true)
+    public ResponseDto<UserListDto> readUsers(String nickname) {
         List<UserListDto> userLists = new ArrayList<>();
         List<User> users = userRepository.findAllByNicknameContaining(nickname);
         for (User user : users) {
             UserListDto userListDto = new UserListDto(user.getId(), user.getUsername(), user.getNickname(), user.getIconUrl());
             userLists.add(userListDto);
         }
-        return UserListResponseDto userListResponseDto = new UserListResponseDto(userLists);
-
+        return new ResponseDto<>(true, "성공", userLists);
     }
 
+    //채널 목록 조회
+    @Transactional(readOnly = true)
     public ResponseDto<?> readChannels(User user) {
         List<UserChannelListDto> userChannelList = new ArrayList<>();
         List<InvitedUserChannel> invitedUserChannels = invitedUserChannelRepository.findAllByUser(user);
         for (InvitedUserChannel invitedUserChannel : invitedUserChannels) {
             Channel channel = invitedUserChannel.getChannel();
-            if (channel.getUser() == user) {
+            if (channel.getUser().getId().equals(user.getId())) {
                 Boolean isOwner = true;
                 UserChannelListDto listDtoIsOwnerTrueDto = new UserChannelListDto(channel.getId(), channel.getChannelName(), channel.isPrivate(), isOwner);
                 userChannelList.add(listDtoIsOwnerTrueDto);
+            }else {
+                Boolean isOwner = false;
+                UserChannelListDto listDtoIsOwnerFalseDto = new UserChannelListDto(channel.getId(), channel.getChannelName(), channel.isPrivate(), isOwner);
+                userChannelList.add(listDtoIsOwnerFalseDto);
             }
-            Boolean isOwner = false;
-            UserChannelListDto listDtoIsOwnerFalseDto = new UserChannelListDto(channel.getId(), channel.getChannelName(), channel.isPrivate(), isOwner);
-            userChannelList.add(listDtoIsOwnerFalseDto);
         }
-        return new ResponseDto<>(userChannelList);
+        return new ResponseDto<>(true, "성공", userChannelList);
     }
 
-    public void deleteChannel(Long channelId, User user) {
+    //채널 삭제(채널 생성자만 가능)
+    @Transactional
+    public ResponseDto<?> deleteChannel(Long channelId, User user) { //userchannl entity에 channel은 null인데 user는 살아있다
         Channel channel = channelRepository.findById(channelId)
-                .orElseThrow(() -> new NullPointerException("해당 아이디가 존재하지 않습니다."));
+                .orElseThrow(() -> new NullPointerException("해당 채널 아이디가 존재하지 않습니다."));
 
-        if (channel.getUser() != user) {
+        if (!channel.getUser().getId().equals(user.getId())) {
             throw new IllegalArgumentException("채널 생성자가 아닙니다.");
         }
+        invitedUserChannelRepository.deleteAll(invitedUserChannelRepository.findAllByChannel(channel));
         channelRepository.delete(channel);
-
+        return new ResponseDto<>(true, "성공");
     }
 
+    //채널 나가기
     @Transactional
-    public void exitChannel(Long channelId, User user) {
+    public ResponseDto<?> exitChannel(Long channelId, User user) {
         Channel channel = channelRepository.findById(channelId)
-                .orElseThrow(() -> new NullPointerException("해당 아이디가 존재하지 않습니다."));
-        InvitedUserChannel invitedUserChannel = invitedUserChannelRepository.findByUserAndChannel(user,channel);
+                .orElseThrow(() -> new NullPointerException("해당 채널 아이디가 존재하지 않습니다."));
+        InvitedUserChannel invitedUserChannel = invitedUserChannelRepository.findByUserAndChannel(user, channel);
         invitedUserChannelRepository.delete(invitedUserChannel);
 //        for (InvitedUserChannel invitedUserChannel : invitedUserChannels) {
 //            if (invitedUserChannel.getUser() == user &&) {
 //                invitedUserChannelRepository.delete(invitedUserChannel);
 //            }
 //        }
-
+        return new ResponseDto<>(true, "성공");
     }
 
+    //채널 초대
     @Transactional
-    public void inviteChannel(ChannelInviteRequestDto channelInviteRequestDto) {
+    public ResponseDto<?> inviteChannel(ChannelInviteRequestDto channelInviteRequestDto) {
         Channel channel = channelRepository.findById(channelInviteRequestDto.getChannelId())
-                .orElseThrow(() -> new NullPointerException("해당 아이디가 존재하지 않습니다."));
+                .orElseThrow(() -> new NullPointerException("해당 채널 아이디가 존재하지 않습니다."));
         for (Long userId : channelInviteRequestDto.getUserId()) {
             User user = userRepository.findById(userId)
-                    .orElseThrow(() -> new NullPointerException("해당 아이디가 존재하지 않습니다."));
-            InvitedUserChannel invitedUserChannel = new InvitedUserChannel(user);
+                    .orElseThrow(() -> new NullPointerException("해당 유저 아이디가 존재하지 않습니다."));
+            InvitedUserChannel invitedUserChannel = new InvitedUserChannel(user,channel);
             invitedUserChannelRepository.save(invitedUserChannel);
         }
-        channel.update(invitedUserChannelRepository.findAllByChannel(channel));
-
+        return new ResponseDto<>(true, "성공");
     }
-
-
 }

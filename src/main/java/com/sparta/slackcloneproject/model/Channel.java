@@ -39,7 +39,4 @@ public class Channel {
         this.user = user;
         this.invitedUserChannels = invitedUserChannels;
     }
-    public void update(List<InvitedUserChannel> invitedUserChannels){
-        this.invitedUserChannels = invitedUserChannels;
-    }
 }

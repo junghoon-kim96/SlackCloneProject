@@ -15,49 +15,51 @@ public class ChannelController {
 
     private final ChannelService channelService;
 
-    public ChannelController(ChannelService channelService){
+    public ChannelController(ChannelService channelService) {
         this.channelService = channelService;
     }
 
     //채널 생성
     @PostMapping("/api/channel")
-    public void createChannel(@RequestBody ChannelRequestDto channelRequestDto,
-                              @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseDto<?> createChannel(@RequestBody ChannelRequestDto channelRequestDto,
+                                        @AuthenticationPrincipal UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
-        channelService.createChannel(channelRequestDto,user);
+        return channelService.createChannel(channelRequestDto, user);
     }
 
     //초대 할 유저정보 조회
-   @GetMapping("/api/userSearch?{검색내용}")
-    public UserListResponseDto readUsers(@RequestParam String nickname){
-       return channelService.readUsers(nickname);
+    @GetMapping("/api/userSearch")
+    public ResponseDto<?> readUsers(@RequestParam String nickname) {
+        return channelService.readUsers(nickname);
     }
 
 
     //채널 목록 조회
     @GetMapping("/api/channelList")
-    public ResponseDto<?> readChannels(@AuthenticationPrincipal UserDetailsImpl userDetails){//유저 받아와야함
+    public ResponseDto<?> readChannels(@AuthenticationPrincipal UserDetailsImpl userDetails) {//유저 받아와야함
         User user = userDetails.getUser();
         return channelService.readChannels(user);
     }
 
     //채널 삭제(채널 생성자만 가능)
     @DeleteMapping("/api/channel/{channelId}")
-    public void  deleteChannelId(@PathVariable Long channelId,
-                                 @AuthenticationPrincipal UserDetailsImpl userDetails){// 유저를 받아온다, 그리고 비교
+    public ResponseDto<?> deleteChannelId(@PathVariable Long channelId,
+                                          @AuthenticationPrincipal UserDetailsImpl userDetails) {// 유저를 받아온다, 그리고 비교
         User user = userDetails.getUser();
-        channelService.deleteChannel(channelId,user);
+        return channelService.deleteChannel(channelId, user);
     }
 
+    //채널 나가기
     @DeleteMapping("/api/channelExit/{channelId}")
-    public void exitChannel(@PathVariable Long channelId,
-                            @AuthenticationPrincipal UserDetailsImpl userDetails){// 유저를 받아온다
+    public ResponseDto<?> exitChannel(@PathVariable Long channelId,
+                                      @AuthenticationPrincipal UserDetailsImpl userDetails) {// 유저를 받아온다
         User user = userDetails.getUser();
-        channelService.exitChannel(channelId,user);
+        return channelService.exitChannel(channelId, user);
     }
 
+    //채널 초대
     @PostMapping("/api/channelInvite")
-    public void inviteChannel(@RequestBody ChannelInviteRequestDto channelInviteRequestDto){
-        channelService.inviteChannel(channelInviteRequestDto);
+    public ResponseDto<?> inviteChannel(@RequestBody ChannelInviteRequestDto channelInviteRequestDto) {
+        return channelService.inviteChannel(channelInviteRequestDto);
     }
 }

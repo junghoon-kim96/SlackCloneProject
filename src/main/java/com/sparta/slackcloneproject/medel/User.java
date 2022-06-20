@@ -1,10 +1,11 @@
 package com.sparta.slackcloneproject.medel;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
 
 import javax.persistence.*;
 import java.util.List;
-
+@Getter
 @Entity(name = "users")
 public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)

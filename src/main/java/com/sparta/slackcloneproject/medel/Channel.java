@@ -1,9 +1,12 @@
 package com.sparta.slackcloneproject.medel;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Getter
 public class Channel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

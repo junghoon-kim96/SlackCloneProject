@@ -18,7 +18,7 @@ public class MessageService {
     private final ChannelRepository channelRepository;
     private final InvitedUserChannelRepository invitedUserChannelRepository;
     public void addMessage(MessageDTO messageDto, UserDetailsImpl userDetails) {
-
+        Channel channel = channelRepository.findById(messageDto.getChannelId()).orElseThrow(()-> new IllegalArgumentException("채널 아이디가 없습니다."));
         validateRole(messageDto.getChannelId(), userDetails);
         messageRepository.save(Message.builder()
                         .message(messageDto.getMessage())

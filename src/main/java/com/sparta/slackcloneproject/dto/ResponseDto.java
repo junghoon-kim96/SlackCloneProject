@@ -28,7 +28,12 @@ public class ResponseDto<T> {
         this.message = message;
     }
 
-    public ResponseDto(List<T> userChannelList) {
+    public ResponseDto(boolean response, String message,List<T> userChannelList) {
+        this.response = response;
+        this.message = message;
         this.list = userChannelList;
+    }
+
+    public <R> ResponseDto(R collect) {
     }
 }

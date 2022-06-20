@@ -34,9 +34,9 @@ public class MessageService {
     }
 
     private void validateRole(Long channelId, UserDetailsImpl userDetails) throws IllegalArgumentException{
-        Channel channel = channelRepository.findById(channelId).orElseThrow(()->{
-            throw new IllegalArgumentException("채널이 존재하지 않습니다.");
-        });
+        Channel channel = channelRepository.findById(channelId).orElseThrow(()->
+             new IllegalArgumentException("채널이 존재하지 않습니다.")
+        );
         if(!invitedUserChannelRepository.existsByChannelAndUser(channel,userDetails.getUser())){
             throw new IllegalArgumentException("채팅 권한이 없습니다.");
         }

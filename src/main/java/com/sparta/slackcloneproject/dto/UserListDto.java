@@ -1,5 +1,9 @@
 package com.sparta.slackcloneproject.dto;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+@Getter
+@NoArgsConstructor
 public class UserListDto {
     private Long userId;
     private String username;

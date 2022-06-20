@@ -1,12 +1,14 @@
 package com.sparta.slackcloneproject.service;
 
-import com.sparta.slackcloneproject.dto.ResponseDto;
-import com.sparta.slackcloneproject.dto.SignUpRequestDto;
+import com.sparta.slackcloneproject.dto.*;
 import com.sparta.slackcloneproject.model.User;
 import com.sparta.slackcloneproject.repository.UserRepository;
+import com.sparta.slackcloneproject.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -14,6 +16,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
     public ResponseDto<?> signup(SignUpRequestDto requestDto) {
         // 중복체크
         if(userRepository.existsByUsername(requestDto.getUsername())) {
@@ -32,5 +35,14 @@ public class UserService {
         requestDto.setPassword(passwordEncoder.encode(requestDto.getPassword()));
         userRepository.save(new User(requestDto));
         return new ResponseDto<>(true, "회원가입 성공");
+    }
+
+    public ResponseDto<?> login(LoginRequestDto requestDto) {
+        User user = userRepository.findByUsername(requestDto.getUsername()).orElseThrow(
+                () -> new NoSuchElementException("해당 유저를 찾을 수 없습니다.")
+        );
+        Userinfo userinfo = new Userinfo(user.getId(),user.getNickname(),user.getIconUrl());
+        jwtTokenProvider.createToken(requestDto.getUsername());
+        return new ResponseDto<>(true, userinfo,"로그인 성공");
     }
 }

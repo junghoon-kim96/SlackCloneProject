@@ -1,6 +1,7 @@
 package com.sparta.slackcloneproject.controller;
 
 
+import com.sparta.slackcloneproject.dto.LoginRequestDto;
 import com.sparta.slackcloneproject.dto.ResponseDto;
 import com.sparta.slackcloneproject.dto.SignUpRequestDto;
 import com.sparta.slackcloneproject.service.UserService;
@@ -22,5 +23,10 @@ public class UserController {
     public ResponseEntity<ResponseDto<?>> signup (@Valid @RequestBody SignUpRequestDto requestDto) {
 
         return ResponseEntity.ok().body(userService.signup(requestDto));
+    }
+
+    @PostMapping("/api/login")
+    public ResponseEntity<ResponseDto<?>> login (@RequestBody LoginRequestDto requestDto) {
+        return ResponseEntity.ok().body(userService.login(requestDto));
     }
 }

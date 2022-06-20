@@ -1,4 +1,4 @@
-package com.sparta.slackcloneproject.medel;
+package com.sparta.slackcloneproject.model;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;

@@ -1,4 +1,4 @@
-package com.sparta.slackcloneproject.medel;
+package com.sparta.slackcloneproject.model;
 
 import com.sparta.slackcloneproject.dto.ChannelRequestDto;
 import lombok.Getter;

@@ -11,12 +11,24 @@ import java.util.List;
 @Setter
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ChannelListResponseDto<T> {
+public class ResponseDto<T> {
     private boolean response;
     private String message;
-    private List<UserChannelListDto> list;
+    private List<T> list;
+    private Userinfo userinfo;
 
-    public ChannelListResponseDto(List<UserChannelListDto> userChannelList) {
+    public ResponseDto (boolean response, String message) {
+        this.response = response;
+        this.message = message;
+    }
+
+    public ResponseDto(boolean reponse, Userinfo userinfo, String message) {
+        this.response = reponse;
+        this.userinfo = userinfo;
+        this.message = message;
+    }
+
+    public ResponseDto(List<T> userChannelList) {
         this.list = userChannelList;
     }
 }

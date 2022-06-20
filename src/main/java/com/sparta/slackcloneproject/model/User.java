@@ -1,6 +1,7 @@
-package com.sparta.slackcloneproject.medel;
+package com.sparta.slackcloneproject.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sparta.slackcloneproject.dto.SignUpRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -32,9 +33,11 @@ public class User {
     @JoinColumn(name = "user_id")
     private List<InvitedUserChannel> invitedUserChannels;
 
-    public User(String s, String s1, String hi) {
-        this.username = s;
-        this.nickname = hi;
-        this.password = s1;
+    public User (SignUpRequestDto requestDto) {
+        this.username = requestDto.getUsername();
+        this.nickname = requestDto.getNickname();
+        this.iconUrl = requestDto.getIconUrl();
+        this.password = requestDto.getPassword();
     }
+
 }

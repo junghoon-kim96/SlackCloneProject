@@ -3,10 +3,12 @@ package com.sparta.slackcloneproject.socket;
 
 import com.sparta.slackcloneproject.model.Message;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class MessageDTO {
 
     private Long channelId;

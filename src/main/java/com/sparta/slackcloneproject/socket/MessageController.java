@@ -4,6 +4,7 @@ import com.sparta.slackcloneproject.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,7 +22,7 @@ public class MessageController {
     private final MessageService messageService;
     @ResponseBody
     @GetMapping("/api/chat/{channelId}")
-    public ResponseEntity messages(@PathVariable Long channelId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<?> messages(@PathVariable Long channelId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         return ResponseEntity.ok().body(messageService.messages(channelId, userDetails));
     }
@@ -33,9 +34,12 @@ public class MessageController {
     //     template.convertAndSend("/sub/channel/" + messageDto.getChannelId(), messageDto);
     // }
 
-    @MessageMapping(value = "/message/{channelId}")
-    public void addMessage(MessageDTO messageDto,@DestinationVariable Long channerId, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        messageService.addMessage(messageDto,userDetails);
-        template.convertAndSend("/sub/channel/" + channerId, messageDto);
+    @MessageMapping(value = {"/message","/message/{channelId}"})
+    public void addMessage(MessageDTO messageDto, @Header("Authorization") String token) {
+        System.out.println(token);
+        String channelId="1";
+        System.out.println(channelId);
+        messageService.addMessage(messageDto, token);
+        template.convertAndSend("/sub/channel/" + channelId, messageDto);
     }
 }

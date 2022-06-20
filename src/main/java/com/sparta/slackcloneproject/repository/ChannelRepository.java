@@ -8,5 +8,4 @@ import java.util.List;
 
 public interface ChannelRepository extends JpaRepository<Channel,Long> {
 
-    List<Channel> findAllByUser(User user);
 }

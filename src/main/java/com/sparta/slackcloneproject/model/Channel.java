@@ -32,14 +32,11 @@ public class Channel {
     @JoinColumn(name = "channel_id")
     private List<InvitedUserChannel> invitedUserChannels; //초대된 유저
 
-    public Channel(ChannelRequestDto channelRequestDto, List<InvitedUserChannel> invitedUserChannels, User user2) {
+    public Channel(ChannelRequestDto channelRequestDto, List<InvitedUserChannel> invitedUserChannels, User user) {
         this.channelName = channelRequestDto.getChannelName();
         this.description = channelRequestDto.getDescription();
         this.isPrivate = channelRequestDto.isPrivate();
-        this.user = user2;
-        this.invitedUserChannels = invitedUserChannels;
-    }
-    public void update(List<InvitedUserChannel> invitedUserChannels){
+        this.user = user;
         this.invitedUserChannels = invitedUserChannels;
     }
 }

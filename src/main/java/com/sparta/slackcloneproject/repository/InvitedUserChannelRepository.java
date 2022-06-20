@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface InvitedUserChannelRepository extends JpaRepository<InvitedUserChannel, Long> {
     List<InvitedUserChannel> findAllByChannel(Channel channel);
+    boolean existsByChannelAndUser(Channel channel, User user);
+}
 }

@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
 import java.util.NoSuchElementException;
 
 @Service
@@ -17,7 +18,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
-    public ResponseDto<?> signup(SignUpRequestDto requestDto) {
+    public ResponseDto<?> signup(@Valid SignUpRequestDto requestDto) {
         // 중복체크
         if(userRepository.existsByUsername(requestDto.getUsername())) {
             throw new IllegalArgumentException("중복된 아이디입니다.");
@@ -39,7 +40,7 @@ public class UserService {
 
     public ResponseDto<?> login(LoginRequestDto requestDto) {
         User user = userRepository.findByUsername(requestDto.getUsername()).orElseThrow(
-                () -> new NoSuchElementException("해당 유저를 찾을 수 없습니다.")
+                () -> new IllegalArgumentException("해당 유저를 찾을 수 없습니다.")
         );
         Userinfo userinfo = new Userinfo(user.getId(),user.getNickname(),user.getIconUrl());
         jwtTokenProvider.createToken(requestDto.getUsername());

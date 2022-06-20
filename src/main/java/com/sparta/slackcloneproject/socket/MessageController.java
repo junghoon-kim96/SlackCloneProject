@@ -35,11 +35,11 @@ public class MessageController {
     // }
 
     @MessageMapping(value = {"/message","/message/{channelId}"})
-    public void addMessage(MessageDTO messageDto, @Header("Authorization") String token) {
+    public void addMessage(MessageDTO messageDto, @Header("Authorization") String token,@DestinationVariable Long channelId) {
         System.out.println(token);
-        String channelId="1";
+        // channelId=messageDto.getChannelId();
         System.out.println(channelId);
-        messageService.addMessage(messageDto, token);
-        template.convertAndSend("/sub/channel/" + channelId, messageDto);
+        MessageDTO responseMessageDto = messageService.addMessage(messageDto, token, channelId);
+        template.convertAndSend("/sub/channel/" + channelId, responseMessageDto);
     }
 }

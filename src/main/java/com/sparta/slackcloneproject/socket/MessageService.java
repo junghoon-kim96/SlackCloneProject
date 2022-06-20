@@ -22,17 +22,20 @@ public class MessageService {
     private final ChannelRepository channelRepository;
     private final InvitedUserChannelRepository invitedUserChannelRepository;
     private final JwtTokenProvider jwtTokenProvider;
-    public void addMessage(MessageDTO messageDto, String token) {
+    public MessageDTO addMessage(MessageDTO messageDto, String token, Long channelId) {
         Authentication authentication = jwtTokenProvider.getAuthentication(token);
         UserDetailsImpl userDetails =(UserDetailsImpl) authentication.getPrincipal();
-        Channel channel = channelRepository.findById(messageDto.getChannelId()).orElseThrow(()-> new IllegalArgumentException("채널 아이디가 없습니다."));
-        validateRole(messageDto.getChannelId(), userDetails);
+        Channel channel = validateRole(channelId, userDetails);
         messageRepository.save(Message.builder()
                         .message(messageDto.getMessage())
                         .user(userDetails.getUser())
                         .channel(channel)
                         .build());
-
+        messageDto.setUserId(userDetails.getUser().getId());
+        messageDto.setUsername(userDetails.getUsername());
+        messageDto.setNickname(userDetails.getUser().getNickname());
+        messageDto.setIconUrl(userDetails.getUser().getIconUrl());
+        return messageDto;
     }
 
     public ResponseDto<MessageDTO> messages(Long channelId, UserDetailsImpl userDetails) {
@@ -40,12 +43,13 @@ public class MessageService {
         return new ResponseDto<>(messageRepository.findTop100ByChannelIdOrderByCreatedAtAsc(channelId).stream().map(MessageDTO::new).collect(Collectors.toList()));
     }
 
-    private void validateRole(Long channelId, UserDetailsImpl userDetails) throws IllegalArgumentException{
+    private Channel validateRole(Long channelId, UserDetailsImpl userDetails) throws IllegalArgumentException{
         Channel channel = channelRepository.findById(channelId).orElseThrow(()->
             new IllegalArgumentException("채널이 존재하지 않습니다.")
         );
-        // if(!invitedUserChannelRepository.existsByChannelIdAndUser((channelId,userDetails.getUser())){
-        //     throw new IllegalArgumentException("채팅 권한이 없습니다.");
-        // }
+        if (!invitedUserChannelRepository.existsByChannelAndUser(channel, userDetails.getUser())) {
+            throw new IllegalArgumentException("채팅 권한이 없습니다.");
+        }
+        return channel;
     }
 }

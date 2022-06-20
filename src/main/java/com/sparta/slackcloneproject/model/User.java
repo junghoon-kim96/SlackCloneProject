@@ -1,6 +1,9 @@
 package com.sparta.slackcloneproject.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sparta.slackcloneproject.dto.SignUpRequestDto;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;

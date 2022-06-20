@@ -25,4 +25,8 @@ public class InvitedUserChannel {
         this.user = user;
     }
 
+    public InvitedUserChannel(User user, Channel channel) {
+        this.user = user;
+        this.channel = channel;
+    }
 }

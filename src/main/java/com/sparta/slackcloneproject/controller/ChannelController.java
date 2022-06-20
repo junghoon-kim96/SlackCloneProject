@@ -28,7 +28,7 @@ public class ChannelController {
     }
 
     //초대 할 유저정보 조회
-    @GetMapping("/api/userSearch?{검색내용}")
+    @GetMapping("/api/userSearch")
     public ResponseDto<?> readUsers(@RequestParam String nickname) {
         return channelService.readUsers(nickname);
     }

@@ -1,6 +1,7 @@
 package com.sparta.slackcloneproject.socket;
 
 
+import com.sparta.slackcloneproject.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;

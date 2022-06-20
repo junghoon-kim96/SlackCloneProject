@@ -1,13 +1,12 @@
 package com.sparta.slackcloneproject.socket;
 
 import com.sparta.slackcloneproject.dto.ResponseDto;
-import com.sparta.slackcloneproject.medel.Channel;
-import com.sparta.slackcloneproject.medel.InvitedUserChannel;
-import com.sparta.slackcloneproject.medel.Message;
+import com.sparta.slackcloneproject.model.Channel;
+import com.sparta.slackcloneproject.model.Message;
 import com.sparta.slackcloneproject.repository.ChannelRepository;
 import com.sparta.slackcloneproject.repository.InvitedUserChannelRepository;
+import com.sparta.slackcloneproject.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.stream.Collectors;

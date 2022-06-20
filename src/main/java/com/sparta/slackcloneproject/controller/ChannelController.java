@@ -2,6 +2,7 @@ package com.sparta.slackcloneproject.controller;
 
 import com.sparta.slackcloneproject.dto.ChannelInviteRequestDto;
 import com.sparta.slackcloneproject.dto.ChannelRequestDto;
+import com.sparta.slackcloneproject.dto.ResponseDto;
 import com.sparta.slackcloneproject.dto.UserListResponseDto;
 import com.sparta.slackcloneproject.service.ChannelService;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,7 @@ public class ChannelController {
 
     //채널 목록 조회
     @GetMapping("/api/channelList")
-    public ChannelListResponseDto<T> readChannels(){//유저 받아와야함
+    public ResponseDto<?> readChannels(){//유저 받아와야함
        return channelService.readChannels();
     }
 

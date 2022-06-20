@@ -1,7 +1,7 @@
 package com.sparta.slackcloneproject.socket;
 
-import com.sparta.slackcloneproject.medel.Message;
-import com.sparta.slackcloneproject.medel.User;
+
+import com.sparta.slackcloneproject.model.Message;
 import lombok.Getter;
 import lombok.Setter;
 

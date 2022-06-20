@@ -1,6 +1,6 @@
 package com.sparta.slackcloneproject.socket;
 
-import com.sparta.slackcloneproject.medel.Message;
+import com.sparta.slackcloneproject.model.Message;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.sparta.slackcloneproject.repository;
 
-import com.sparta.slackcloneproject.medel.Channel;
-import com.sparta.slackcloneproject.medel.User;
+import com.sparta.slackcloneproject.model.Channel;
+import com.sparta.slackcloneproject.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

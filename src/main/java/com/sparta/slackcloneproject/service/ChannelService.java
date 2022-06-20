@@ -1,9 +1,9 @@
 package com.sparta.slackcloneproject.service;
 
 import com.sparta.slackcloneproject.dto.*;
-import com.sparta.slackcloneproject.medel.Channel;
-import com.sparta.slackcloneproject.medel.InvitedUserChannel;
-import com.sparta.slackcloneproject.medel.User;
+import com.sparta.slackcloneproject.model.Channel;
+import com.sparta.slackcloneproject.model.InvitedUserChannel;
+import com.sparta.slackcloneproject.model.User;
 import com.sparta.slackcloneproject.repository.ChannelRepository;
 import com.sparta.slackcloneproject.repository.InvitedUserChannelRepository;
 import com.sparta.slackcloneproject.repository.UserRepository;
@@ -73,11 +73,11 @@ public class ChannelService {
             UserListDto userListDto = new UserListDto(user.getId(), user.getUsername(), user.getNickname(),user.getIconUrl());
             userLists.add(userListDto);
         }
-        return UserListResponseDto userListResponseDto = new UserListResponseDto(userLists)
+        return UserListResponseDto userListResponseDto = new UserListResponseDto(userLists);
 
     }
 
-    public ChannelListResponseDto<?> readChannels() {//받아온 유저로 채널 꺼내온다
+    public ResponseDto<?> readChannels() {//받아온 유저로 채널 꺼내온다
         List<UserChannelListDto> userChannelList = new ArrayList<>();
         List<Channel> channels = channelRepository.findAllbyUser(user);
         for(Channel channel : channels){
@@ -90,7 +90,7 @@ public class ChannelService {
             UserChannelListDto listDtoIsOwnerFalseDto = new UserChannelListDto(channel.getId(),channel.getChannelName(),channel.isPrivate(),isOwner);
             userChannelList.add(listDtoIsOwnerFalseDto);
         }
-        return new ChannelListResponseDto<>(userChannelList);
+        return new ResponseDto<>(userChannelList);
 
 
     }

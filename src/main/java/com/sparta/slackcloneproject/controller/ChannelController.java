@@ -7,6 +7,7 @@ import com.sparta.slackcloneproject.dto.UserListResponseDto;
 import com.sparta.slackcloneproject.model.User;
 import com.sparta.slackcloneproject.security.UserDetailsImpl;
 import com.sparta.slackcloneproject.service.ChannelService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,8 +22,8 @@ public class ChannelController {
 
     //채널 생성
     @PostMapping("/api/channel")
-    public ResponseDto<?> createChannel(@RequestBody ChannelRequestDto channelRequestDto,
-                                        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<ResponseDto<?>> createChannel(@RequestBody ChannelRequestDto channelRequestDto,
+                                                        @AuthenticationPrincipal UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
         return channelService.createChannel(channelRequestDto, user);
     }
@@ -43,7 +44,7 @@ public class ChannelController {
 
     //채널 삭제(채널 생성자만 가능)
     @DeleteMapping("/api/channel/{channelId}")
-    public ResponseDto<?> deleteChannelId(@PathVariable Long channelId,
+    public ResponseEntity<ResponseDto<?>> deleteChannelId(@PathVariable Long channelId,
                                           @AuthenticationPrincipal UserDetailsImpl userDetails) {// 유저를 받아온다, 그리고 비교
         User user = userDetails.getUser();
         return channelService.deleteChannel(channelId, user);
@@ -51,7 +52,7 @@ public class ChannelController {
 
     //채널 나가기
     @DeleteMapping("/api/channelExit/{channelId}")
-    public ResponseDto<?> exitChannel(@PathVariable Long channelId,
+    public ResponseEntity<ResponseDto<?>> exitChannel(@PathVariable Long channelId,
                                       @AuthenticationPrincipal UserDetailsImpl userDetails) {// 유저를 받아온다
         User user = userDetails.getUser();
         return channelService.exitChannel(channelId, user);
@@ -59,7 +60,7 @@ public class ChannelController {
 
     //채널 초대
     @PostMapping("/api/channelInvite")
-    public ResponseDto<?> inviteChannel(@RequestBody ChannelInviteRequestDto channelInviteRequestDto) {
+    public ResponseEntity<ResponseDto<?>> inviteChannel(@RequestBody ChannelInviteRequestDto channelInviteRequestDto) {
         return channelService.inviteChannel(channelInviteRequestDto);
     }
 }

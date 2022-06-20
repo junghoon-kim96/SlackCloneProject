@@ -27,4 +27,8 @@ public class ResponseDto<T> {
         this.userinfo = userinfo;
         this.message = message;
     }
+
+    public ResponseDto(List<T> userChannelList) {
+        this.list = userChannelList;
+    }
 }

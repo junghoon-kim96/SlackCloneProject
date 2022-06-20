@@ -17,9 +17,9 @@ public class InvitedUserChannel {
     @JoinColumn(name = "user_id")
     private User user;
 
-//    @ManyToOne
-//    @JoinColumn(name = "channel_id")
-//    private Channel channel;
+    @ManyToOne
+    @JoinColumn(name = "channel_id")
+    private Channel channel;
 
     public InvitedUserChannel(User user){
         this.user = user;

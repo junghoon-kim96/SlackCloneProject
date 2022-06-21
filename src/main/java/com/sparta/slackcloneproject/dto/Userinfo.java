@@ -10,7 +10,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Userinfo {
     private Long userid;
+    private String username;
     private String nickname;
-    private String icon_url;
+    private String iconUrl;
 
 }

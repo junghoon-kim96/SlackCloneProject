@@ -22,7 +22,7 @@ public class Channel {
     private String description;
 
     @Column(nullable = false)
-    private boolean isPrivate;
+    private Boolean isPrivate;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -35,7 +35,7 @@ public class Channel {
     public Channel(ChannelRequestDto channelRequestDto, List<InvitedUserChannel> invitedUserChannels, User user) {
         this.channelName = channelRequestDto.getChannelName();
         this.description = channelRequestDto.getDescription();
-        this.isPrivate = channelRequestDto.isPrivate();
+        this.isPrivate = channelRequestDto.getIsPrivate();
         this.user = user;
         this.invitedUserChannels = invitedUserChannels;
     }

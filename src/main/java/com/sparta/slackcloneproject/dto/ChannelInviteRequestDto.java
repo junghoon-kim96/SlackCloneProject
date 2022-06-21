@@ -9,5 +9,5 @@ import java.util.List;
 @Getter
 public class ChannelInviteRequestDto {
     private Long channelId;
-    private List<Long> userId;
+    private List<Long> userList;
 }

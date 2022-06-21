@@ -7,6 +7,7 @@ import com.sparta.slackcloneproject.model.User;
 import com.sparta.slackcloneproject.repository.ChannelRepository;
 import com.sparta.slackcloneproject.repository.InvitedUserChannelRepository;
 import com.sparta.slackcloneproject.repository.UserRepository;
+import com.sun.xml.bind.v2.TODO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 @Service
@@ -49,19 +51,34 @@ public class ChannelService {
         }
         invitedUserChannelRepository.saveAll(invitedUserChannels);
         Channel channel = new Channel(channelRequestDto, invitedUserChannels, user);
-        channelRepository.save(channel);
+        Channel createdChannel = channelRepository.save(channel);
 
-        return successAction("채널 생성");
+        // return successAction("채널 생성");
+        return new ResponseEntity<>(new ResponseDto<>(true, "채널생성", new ChannelResultDto(createdChannel.getId(),createdChannel.getChannelName(),createdChannel.getIsPrivate(),true)),HttpStatus.OK);
     }
+
 
     //초대 할 유저정보 조회
     @Transactional(readOnly = true)
-    public ResponseDto<UserListDto> readUsers(String nickname) {
+    public ResponseDto<UserListDto> readUsers(String nickname, Long channelId, User ownerUser) {
         List<UserListDto> userLists = new ArrayList<>();
         List<User> users = userRepository.findAllByNicknameContaining(nickname);
         for (User user : users) {
-            UserListDto userListDto = new UserListDto(user.getId(), user.getUsername(), user.getNickname(), user.getIconUrl());
-            userLists.add(userListDto);
+            if (channelId != null) {
+                //생성되어있는 채널에 유저 초대
+                if(!invitedUserChannelRepository.existsByUserAndChannelId(user, channelId)){
+                    //이미 초대되어있는 유저가 아닐시
+                    UserListDto userListDto = new UserListDto(user.getId(), user.getUsername(), user.getNickname(), user.getIconUrl());
+                    userLists.add(userListDto);
+                }
+            }else {
+                //새로운 채널
+                if(!Objects.equals(user.getId(), ownerUser.getId())){
+                    UserListDto userListDto = new UserListDto(user.getId(), user.getUsername(), user.getNickname(), user.getIconUrl());
+                    userLists.add(userListDto);
+                }
+            }
+
         }
         return new ResponseDto<>(true, "유저정보 조회 성공", userLists);
     }
@@ -69,19 +86,19 @@ public class ChannelService {
     //채널 목록 조회
     @Transactional(readOnly = true)
     public ResponseDto<?> readChannels(User user) {
+        // TODO: 2022-06-21  공개채널이면 유저가 속해있지 않아도 뿌려줘야됨
+        // List<Channel> channelList = channelRepository.findAllByIsPrivateOrInvitedUserChannelsContains(true, user.getId());
+        //
+        // System.out.println(channelList);
         List<UserChannelListDto> userChannelList = new ArrayList<>();
         List<InvitedUserChannel> invitedUserChannels = invitedUserChannelRepository.findAllByUser(user);
         for (InvitedUserChannel invitedUserChannel : invitedUserChannels) {
             Channel channel = invitedUserChannel.getChannel();
-            if (channel.getUser().getId().equals(user.getId())) {
-                Boolean isOwner = true;
-                UserChannelListDto listDtoIsOwnerTrueDto = new UserChannelListDto(channel.getId(), channel.getChannelName(), channel.isPrivate(), isOwner);
-                userChannelList.add(listDtoIsOwnerTrueDto);
-            }else {
-                Boolean isOwner = false;
-                UserChannelListDto listDtoIsOwnerFalseDto = new UserChannelListDto(channel.getId(), channel.getChannelName(), channel.isPrivate(), isOwner);
-                userChannelList.add(listDtoIsOwnerFalseDto);
-            }
+
+            boolean isOwner = channel.getUser().getId().equals(user.getId());
+
+            UserChannelListDto listDtoIsOwnerFalseDto = new UserChannelListDto(channel.getId(), channel.getChannelName(), channel.getIsPrivate(), isOwner);
+            userChannelList.add(listDtoIsOwnerFalseDto);
         }
         return new ResponseDto<>(true, "채널목록 조회 성공", userChannelList);
     }
@@ -123,12 +140,16 @@ public class ChannelService {
     public ResponseEntity<ResponseDto<?>> inviteChannel(ChannelInviteRequestDto channelInviteRequestDto) {
         Channel channel = channelRepository.findById(channelInviteRequestDto.getChannelId()).orElse(null);
         if(channel == null){
-            checkIdAction("채널");
+            return checkIdAction("채널");
         }
-        for (Long userId : channelInviteRequestDto.getUserId()) {
+        for (Long userId : channelInviteRequestDto.getUserList()) {
             User user = userRepository.findById(userId).orElse(null);
             if(user == null){
                 return checkIdAction("유저");
+            }
+            // 이미 초대된 유저인지 조회
+            if (invitedUserChannelRepository.existsByUserAndChannel(user, channel)) {
+                throw new IllegalArgumentException("이미 초대된 유저가 포함되어 있습니다.");
             }
             InvitedUserChannel invitedUserChannel = new InvitedUserChannel(user,channel);
             invitedUserChannelRepository.save(invitedUserChannel);

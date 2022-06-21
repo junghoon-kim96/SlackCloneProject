@@ -1,6 +1,7 @@
 package com.sparta.slackcloneproject.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.sparta.slackcloneproject.model.Channel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,6 +18,11 @@ public class ResponseDto<T> {
     private List<T> list;
     private Userinfo userinfo;
 
+    private ChannelResultDto result;
+    private Long userId;
+    private String username;
+    private String nickname;
+    private String iconUrl;
     public ResponseDto (boolean response, String message) {
         this.response = response;
         this.message = message;
@@ -33,7 +39,23 @@ public class ResponseDto<T> {
         this.message = message;
         this.list = userChannelList;
     }
+    public ResponseDto(boolean response,List<T> list) {
+        this.response = response;
+        this.list = list;
+    }
 
-    public <R> ResponseDto(R collect) {
+
+    public ResponseDto(boolean response, Long userId, String username, String nickname, String iconUrl) {
+        this.response = response;
+        this.userId = userId;
+        this.username = username;
+        this.nickname = nickname;
+        this.iconUrl = iconUrl;
+    }
+
+    public ResponseDto(boolean response, String message, ChannelResultDto channelResultDto) {
+        this.response = response;
+        this.message = message;
+        this.result = channelResultDto;
     }
 }

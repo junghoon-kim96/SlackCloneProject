@@ -5,6 +5,7 @@ import com.sparta.slackcloneproject.model.User;
 import com.sparta.slackcloneproject.repository.UserRepository;
 import com.sparta.slackcloneproject.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -42,8 +43,18 @@ public class UserService {
         User user = userRepository.findByUsername(requestDto.getUsername()).orElseThrow(
                 () -> new IllegalArgumentException("해당 유저를 찾을 수 없습니다.")
         );
+
+        if (!passwordEncoder.matches(requestDto.getPassword(),user.getPassword())) {
+            return new ResponseDto<>(false,"비밀번호를 확인해 주세요");
+        }
         Userinfo userinfo = new Userinfo(user.getId(),user.getNickname(),user.getIconUrl());
         jwtTokenProvider.createToken(requestDto.getUsername());
         return new ResponseDto<>(true, userinfo,"로그인 성공");
+    }
+
+    public ResponseDto<?> userinfo(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("유저 정보가 없습니다."));
+
+        return new ResponseDto<>(true, userId, user.getUsername(), user.getNickname(), user.getIconUrl());
     }
 }

@@ -13,6 +13,6 @@ import java.util.List;
 public class ChannelRequestDto {
     private String channelName;
     private String description;
-    private boolean isPrivate;
+    private Boolean isPrivate;
     private List<Long> userList;
 }

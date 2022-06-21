@@ -11,7 +11,7 @@ public class UserChannelListDto {
     private Boolean isPrivate;
     private Boolean isOwner;
 
-    public UserChannelListDto(Long id, String channelName, boolean isPrivate, Boolean isOwner) {
+    public UserChannelListDto(Long id, String channelName, Boolean isPrivate, Boolean isOwner) {
         this.channelId = id;
         this.channelName = channelName;
         this.isPrivate = isPrivate;

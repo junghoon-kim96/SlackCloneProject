@@ -7,6 +7,7 @@ import com.sparta.slackcloneproject.dto.UserListResponseDto;
 import com.sparta.slackcloneproject.model.User;
 import com.sparta.slackcloneproject.security.UserDetailsImpl;
 import com.sparta.slackcloneproject.service.ChannelService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -30,8 +31,11 @@ public class ChannelController {
 
     //초대 할 유저정보 조회
     @GetMapping("/api/userSearch")
-    public ResponseDto<?> readUsers(@RequestParam String nickname) {
-        return channelService.readUsers(nickname);
+    public ResponseDto<?> readUsers(@RequestParam String nickname,@RequestParam(required = false) Long channelId,@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        if (userDetails == null) {
+            throw new IllegalArgumentException("로그인이 필요합니다");
+        }
+        return channelService.readUsers(nickname,channelId,userDetails.getUser());
     }
 
 
@@ -46,7 +50,11 @@ public class ChannelController {
     @DeleteMapping("/api/channel/{channelId}")
     public ResponseEntity<ResponseDto<?>> deleteChannelId(@PathVariable Long channelId,
                                           @AuthenticationPrincipal UserDetailsImpl userDetails) {// 유저를 받아온다, 그리고 비교
+        if (userDetails == null) {
+            throw new IllegalArgumentException("로그인이 필요합니다");
+        }
         User user = userDetails.getUser();
+
         return channelService.deleteChannel(channelId, user);
     }
 

@@ -40,13 +40,16 @@ public class MessageService {
 
     public ResponseDto<MessageDTO> messages(Long channelId, UserDetailsImpl userDetails) {
         validateRole(channelId, userDetails);
-        return new ResponseDto<>(messageRepository.findTop100ByChannelIdOrderByCreatedAtAsc(channelId).stream().map(MessageDTO::new).collect(Collectors.toList()));
+        return new ResponseDto<>(true,messageRepository.findTop100ByChannelIdOrderByCreatedAtAsc(channelId).stream().map(MessageDTO::new).collect(Collectors.toList()));
     }
 
     private Channel validateRole(Long channelId, UserDetailsImpl userDetails) throws IllegalArgumentException{
         Channel channel = channelRepository.findById(channelId).orElseThrow(()->
             new IllegalArgumentException("채널이 존재하지 않습니다.")
         );
+        if (userDetails == null) {
+            throw new IllegalArgumentException("로그인이 필요합니다");
+        }
         if (!invitedUserChannelRepository.existsByChannelAndUser(channel, userDetails.getUser())) {
             throw new IllegalArgumentException("채팅 권한이 없습니다.");
         }

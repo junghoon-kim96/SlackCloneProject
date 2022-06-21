@@ -22,15 +22,16 @@ public class MessageService {
     private final ChannelRepository channelRepository;
     private final InvitedUserChannelRepository invitedUserChannelRepository;
     private final JwtTokenProvider jwtTokenProvider;
+
     public MessageDTO addMessage(MessageDTO messageDto, String token, Long channelId) {
         Authentication authentication = jwtTokenProvider.getAuthentication(token);
-        UserDetailsImpl userDetails =(UserDetailsImpl) authentication.getPrincipal();
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         Channel channel = validateRole(channelId, userDetails);
         messageRepository.save(Message.builder()
-                        .message(messageDto.getMessage())
-                        .user(userDetails.getUser())
-                        .channel(channel)
-                        .build());
+                .message(messageDto.getMessage())
+                .user(userDetails.getUser())
+                .channel(channel)
+                .build());
         messageDto.setUserId(userDetails.getUser().getId());
         messageDto.setUsername(userDetails.getUsername());
         messageDto.setNickname(userDetails.getUser().getNickname());
@@ -40,12 +41,12 @@ public class MessageService {
 
     public ResponseDto<MessageDTO> messages(Long channelId, UserDetailsImpl userDetails) {
         validateRole(channelId, userDetails);
-        return new ResponseDto<>(true,messageRepository.findTop100ByChannelIdOrderByCreatedAtAsc(channelId).stream().map(MessageDTO::new).collect(Collectors.toList()));
+        return new ResponseDto<>(true, messageRepository.findTop100ByChannelIdOrderByCreatedAtAsc(channelId).stream().map(MessageDTO::new).collect(Collectors.toList()));
     }
 
-    private Channel validateRole(Long channelId, UserDetailsImpl userDetails) throws IllegalArgumentException{
-        Channel channel = channelRepository.findById(channelId).orElseThrow(()->
-            new IllegalArgumentException("채널이 존재하지 않습니다.")
+    private Channel validateRole(Long channelId, UserDetailsImpl userDetails) throws IllegalArgumentException {
+        Channel channel = channelRepository.findById(channelId).orElseThrow(() ->
+                new IllegalArgumentException("채널이 존재하지 않습니다.")
         );
         if (userDetails == null) {
             throw new IllegalArgumentException("로그인이 필요합니다");

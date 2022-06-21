@@ -17,7 +17,7 @@ public class RestApiExceptionHandler {
         restApiException.setResponse(false);
         restApiException.setMessage(ex.getMessage());
 
-        return new ResponseEntity(
+        return new ResponseEntity<>(
                 restApiException,
                 HttpStatus.BAD_REQUEST
         );
@@ -28,7 +28,7 @@ public class RestApiExceptionHandler {
         restApiException.setResponse(false);
         restApiException.setMessage(ex.getBindingResult().getAllErrors().get(0).getDefaultMessage());
 
-        return new ResponseEntity(
+        return new ResponseEntity<>(
                 restApiException,
                 HttpStatus.BAD_REQUEST
         );

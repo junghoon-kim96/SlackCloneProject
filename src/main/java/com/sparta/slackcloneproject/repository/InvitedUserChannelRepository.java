@@ -19,5 +19,6 @@ public interface InvitedUserChannelRepository extends JpaRepository<InvitedUserC
     boolean existsByUserAndChannel(User user, Channel channel);
 
     boolean existsByUserAndChannelId(User user, Long channelId);
+    List<InvitedUserChannel> findAllByChannel_IsPrivateOrUser(boolean chek, User user);
 }
 

@@ -91,7 +91,8 @@ public class ChannelService {
         //
         // System.out.println(channelList);
         List<UserChannelListDto> userChannelList = new ArrayList<>();
-        List<InvitedUserChannel> invitedUserChannels = invitedUserChannelRepository.findAllByUser(user);
+//        List<InvitedUserChannel> invitedUserChannels = invitedUserChannelRepository.findAllByUser(user);
+        List<InvitedUserChannel> invitedUserChannels = invitedUserChannelRepository.findAllByChannel_IsPrivateOrUser(true, user);
         for (InvitedUserChannel invitedUserChannel : invitedUserChannels) {
             Channel channel = invitedUserChannel.getChannel();
 

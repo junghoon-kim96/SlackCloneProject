@@ -2,6 +2,7 @@ package com.sparta.slackcloneproject.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
 
@@ -26,6 +27,11 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
             // 토큰이 유효하면 토큰으로부터 유저 정보를 받아와서 저장
             Authentication authentication = jwtTokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
+            // 스레드 경합을 피하려면 비어있는 SecurityContext를 하나 생성해야된다고 한다.
+//            SecurityContext context = SecurityContextHolder.createEmptyContext();
+//            context.setAuthentication(authentication);
+//            SecurityContextHolder.setContext(context);
+
         }
 
         chain.doFilter(request, response);

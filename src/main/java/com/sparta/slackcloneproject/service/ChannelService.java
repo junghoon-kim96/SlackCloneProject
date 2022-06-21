@@ -7,6 +7,7 @@ import com.sparta.slackcloneproject.model.User;
 import com.sparta.slackcloneproject.repository.ChannelRepository;
 import com.sparta.slackcloneproject.repository.InvitedUserChannelRepository;
 import com.sparta.slackcloneproject.repository.UserRepository;
+import com.sun.xml.bind.v2.TODO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -85,7 +86,7 @@ public class ChannelService {
     //채널 목록 조회
     @Transactional(readOnly = true)
     public ResponseDto<?> readChannels(User user) {
-
+        // TODO: 2022-06-21  공개채널이면 유저가 속해있지 않아도 뿌려줘야됨
         // List<Channel> channelList = channelRepository.findAllByIsPrivateOrInvitedUserChannelsContains(true, user.getId());
         //
         // System.out.println(channelList);

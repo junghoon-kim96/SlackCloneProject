@@ -41,7 +41,7 @@ public class MessageService {
 
     public ResponseDto<MessageDTO> messages(Long channelId, UserDetailsImpl userDetails) {
         validateRole(channelId, userDetails);
-        return new ResponseDto<>(true, messageRepository.findTop100ByChannelIdOrderByCreatedAtAsc(channelId).stream().map(MessageDTO::new).collect(Collectors.toList()));
+        return new ResponseDto<>(true, messageRepository.findTop100ByChannelIdOrderByCreatedAtDesc(channelId).stream().map(MessageDTO::new).collect(Collectors.toList()));
     }
 
     private Channel validateRole(Long channelId, UserDetailsImpl userDetails) throws IllegalArgumentException {

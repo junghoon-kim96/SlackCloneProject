@@ -10,11 +10,13 @@ public class UserChannelListDto {
     private String channelName;
     private Boolean isPrivate;
     private Boolean isOwner;
+    private String description;
 
-    public UserChannelListDto(Long id, String channelName, Boolean isPrivate, Boolean isOwner) {
+    public UserChannelListDto(Long id, String channelName, Boolean isPrivate, Boolean isOwner, String description) {
         this.channelId = id;
         this.channelName = channelName;
         this.isPrivate = isPrivate;
         this.isOwner = isOwner;
+        this.description = description;
     }
 }

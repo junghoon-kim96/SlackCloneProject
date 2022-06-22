@@ -94,13 +94,24 @@ public class ChannelService {
     @Transactional(readOnly = true)
     public ResponseDto<?> readChannels(User user) {
         List<UserChannelListDto> userChannelList = new ArrayList<>();
-        List<InvitedUserChannel> invitedUserChannels = invitedUserChannelRepository.findAllByChannel_IsPrivateOrUser(true, user);
-        for (InvitedUserChannel invitedUserChannel : invitedUserChannels) {
-            Channel channel = invitedUserChannel.getChannel();
+
+
+        //공개채널
+        List<Channel> channels = channelRepository.findAllByIsPrivateOrInvitedUserChannels_UserId(false, user.getId());
+        for (Channel channel : channels) {
             boolean isOwner = channel.getUser().getId().equals(user.getId());
-            UserChannelListDto listDtoIsOwnerFalseDto = new UserChannelListDto(channel.getId(), channel.getChannelName(), channel.getIsPrivate(), isOwner);
+            UserChannelListDto listDtoIsOwnerFalseDto = new UserChannelListDto(channel.getId(), channel.getChannelName(), channel.getIsPrivate(), isOwner,channel.getDescription());
             userChannelList.add(listDtoIsOwnerFalseDto);
         }
+
+        // //비공개 채널
+        // List<InvitedUserChannel> invitedUserChannels = invitedUserChannelRepository.findAllByChannel_IsPrivateOrUser(true, user);
+        // for (InvitedUserChannel invitedUserChannel : invitedUserChannels) {
+        //     Channel channel = invitedUserChannel.getChannel();
+        //     boolean isOwner = channel.getUser().getId().equals(user.getId());
+        //     UserChannelListDto listDtoIsOwnerFalseDto = new UserChannelListDto(channel.getId(), channel.getChannelName(), channel.getIsPrivate(), isOwner,channel.getDescription());
+        //     userChannelList.add(listDtoIsOwnerFalseDto);
+        // }
         return new ResponseDto<>(true, "채널목록 조회 성공!!", userChannelList);
     }
 

@@ -47,7 +47,7 @@ public class UserService {
         if (!passwordEncoder.matches(requestDto.getPassword(),user.getPassword())) {
             return new ResponseDto<>(false,"비밀번호를 확인해 주세요");
         }
-        Userinfo userinfo = new Userinfo(user.getId(),user.getNickname(),user.getIconUrl());
+        Userinfo userinfo = new Userinfo(user.getId(), user.getUsername(), user.getNickname(), user.getIconUrl());
         jwtTokenProvider.createToken(requestDto.getUsername());
         return new ResponseDto<>(true, userinfo,"로그인 성공");
     }

@@ -60,7 +60,7 @@ public class ChannelService {
             Channel channel = new Channel(channelRequestDto, invitedUserChannels, user);
             Channel createdChannel = channelRepository.save(channel);
             ChannelResultDto channelResultDto = new ChannelResultDto(createdChannel.getId(), createdChannel.getChannelName(), createdChannel.getIsPrivate(), true);
-            // return successAction("채널 생성");
+
             return new ResponseEntity<>(new ResponseDto<>(true, "채널 생성 성공!!", channelResultDto), HttpStatus.OK);
         } catch (CustomException e) {
             return new ResponseEntity<>(new ResponseDto<>(false, e.getMessage()), HttpStatus.BAD_REQUEST);
@@ -97,8 +97,7 @@ public class ChannelService {
     public ResponseDto<?> readChannels(User user) {
         List<UserChannelListDto> userChannelList = new ArrayList<>();
 
-
-        //공개채널
+        //공개채널 + 유저가 속한 채널
         List<Channel> channels = channelRepository.findAllByIsPrivateOrInvitedUserChannels_UserId(false, user.getId());
         for (Channel channel : channels) {
             boolean isOwner = channel.getUser().getId().equals(user.getId());
@@ -106,14 +105,6 @@ public class ChannelService {
             userChannelList.add(listDtoIsOwnerFalseDto);
         }
 
-        // //비공개 채널
-        // List<InvitedUserChannel> invitedUserChannels = invitedUserChannelRepository.findAllByChannel_IsPrivateOrUser(true, user);
-        // for (InvitedUserChannel invitedUserChannel : invitedUserChannels) {
-        //     Channel channel = invitedUserChannel.getChannel();
-        //     boolean isOwner = channel.getUser().getId().equals(user.getId());
-        //     UserChannelListDto listDtoIsOwnerFalseDto = new UserChannelListDto(channel.getId(), channel.getChannelName(), channel.getIsPrivate(), isOwner,channel.getDescription());
-        //     userChannelList.add(listDtoIsOwnerFalseDto);
-        // }
         return new ResponseDto<>(true, "채널목록 조회 성공!!", userChannelList);
     }
 
@@ -127,8 +118,7 @@ public class ChannelService {
         if (!channel.getUser().getId().equals(user.getId())) {
             throw new IllegalArgumentException("채널 생성자가 아닙니다.");
         }
-        // invitedUserChannelRepository.deleteAll(invitedUserChannelRepository.findAllByChannel(channel));
-        // messageRepository.deleteByChannel(channel);
+
         channelRepository.delete(channel);
         return new ResponseEntity<>(new ResponseDto<>(true, "채널 삭제 성공!!"), HttpStatus.OK);
     }

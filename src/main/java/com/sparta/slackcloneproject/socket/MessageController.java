@@ -26,13 +26,6 @@ public class MessageController {
         return ResponseEntity.ok().body(messageService.messages(channelId, userDetails));
     }
 
-    // //stompConfig에서 설정한 applicationDestinationPrefixes와 @MessageMapping 경로가 병합됨
-    // @MessageMapping(value = "/enter")
-    // public void enter(MessageDTO messageDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
-    //     messageDto.setMessage(userDetails.getUser().getUsername + "님이 채팅방에 참여하였습니다.");
-    //     template.convertAndSend("/sub/channel/" + messageDto.getChannelId(), messageDto);
-    // }
-
     @MessageMapping(value = {"/message","/message/{channelId}"})
     public void addMessage(MessageDTO messageDto, @Header("Authorization") String token,@DestinationVariable Long channelId) {
         System.out.println(token);

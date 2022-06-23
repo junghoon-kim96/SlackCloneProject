@@ -6,10 +6,10 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class ChannelResultDto {
-    Long channelId;
-    String channelName;
-    Boolean isPrivate;
-    Boolean isOwner;
+    private Long channelId;
+    private String channelName;
+    private Boolean isPrivate;
+    private Boolean isOwner;
 
     public ChannelResultDto(Long channelId, String channelName, Boolean isPrivate, boolean isOwner) {
         this.channelId = channelId;

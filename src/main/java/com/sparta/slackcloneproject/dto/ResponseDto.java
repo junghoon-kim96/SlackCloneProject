@@ -17,7 +17,6 @@ public class ResponseDto<T> {
     private String message;
     private List<T> list;
     private UserListDto userinfo;
-
     private ChannelResultDto result;
     private Long userId;
     private String username;

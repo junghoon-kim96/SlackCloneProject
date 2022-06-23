@@ -9,5 +9,4 @@ import java.util.List;
 public interface MessageRepository extends JpaRepository<Message,Long> {
     List<Message> findTop100ByChannelIdOrderByCreatedAtDesc(Long channelId);
 
-    void deleteByChannel(Channel channel);
 }

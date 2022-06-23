@@ -18,14 +18,14 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
 
-//    @Value("${jwtSecretKey}")
+
     private String secretKey = "rewind";
 public static final String AUTH_HEADER = "Authorization";
     public final HttpServletResponse response;
 
     // 토큰 유효시간
     // 프론트엔드와 약속해야 함
-    private Long tokenValidTime = 24*60*60*1000L;
+    private final Long tokenValidTime = 24*60*60*1000L;
 
     private final UserDetailsService userDetailsService;
 
@@ -46,9 +46,9 @@ public static final String AUTH_HEADER = "Authorization";
                 //signature에 들어갈 secret값 세팅
                 .compact();
 
-        // response.addHeader("Authorization", "Bearer "+ token);
+
         response.addHeader(AUTH_HEADER,token);
-//        return token;
+
     }
 
     // 토큰에서 회원 정보 추출

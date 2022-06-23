@@ -3,9 +3,6 @@ package com.sparta.slackcloneproject.exception;
 import lombok.Getter;
 import lombok.Setter;
 
-
-
-
 @Getter
 @Setter
 public class RestApiException {

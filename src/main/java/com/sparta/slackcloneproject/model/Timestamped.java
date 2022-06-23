@@ -15,6 +15,4 @@ public abstract class Timestamped {
     @CreatedDate
     private long createdAt = System.currentTimeMillis();
 
-    // @LastModifiedDate
-    // private long modifiedAt = System.currentTimeMillis();
 }

@@ -69,8 +69,6 @@ public class WebConfig extends WebSecurityConfigurerAdapter {
         configuration.addAllowedOrigin("http://localhost:3000");
         configuration.addAllowedOrigin("http://127.0.0.1:3000");
         configuration.addAllowedOrigin("http://cloneslackweek7.s3-website.ap-northeast-2.amazonaws.com");
-        // configuration.addAllowedOrigin("http://127.0.0.1:3000");
-//        configuration.addAllowedOrigin("*"); 모든 ip에 응답을 허용함
         configuration.addAllowedMethod("*"); // 모든 get, pust, put, delete, patch 요청을 허용하겠다.
         configuration.addAllowedHeader("*"); // 모든 헤더 응답을 허용
         configuration.addExposedHeader("Authorization");

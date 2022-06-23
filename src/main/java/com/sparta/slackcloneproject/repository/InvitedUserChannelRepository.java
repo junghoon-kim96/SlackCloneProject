@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface InvitedUserChannelRepository extends JpaRepository<InvitedUserChannel, Long> {
-    List<InvitedUserChannel> findAllByChannel(Channel channel);
+
     boolean existsByChannelAndUser(Channel channel, User user);
 
     InvitedUserChannel findByUserAndChannel(User user, Channel channel);
@@ -16,6 +16,6 @@ public interface InvitedUserChannelRepository extends JpaRepository<InvitedUserC
     boolean existsByUserAndChannel(User user, Channel channel);
 
     boolean existsByUserAndChannelId(User user, Long channelId);
-    List<InvitedUserChannel> findAllByChannel_IsPrivateOrUser(boolean chek, User user);
+
 }
 

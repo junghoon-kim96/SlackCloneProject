@@ -8,9 +8,7 @@ import com.sparta.slackcloneproject.repository.InvitedUserChannelRepository;
 import com.sparta.slackcloneproject.security.JwtTokenProvider;
 import com.sparta.slackcloneproject.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.stream.Collectors;

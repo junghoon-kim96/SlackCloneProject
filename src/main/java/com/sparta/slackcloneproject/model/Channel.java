@@ -3,6 +3,7 @@ package com.sparta.slackcloneproject.model;
 import com.sparta.slackcloneproject.dto.ChannelRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.engine.internal.Cascade;
 
 import javax.persistence.*;
 import java.util.List;
@@ -28,9 +29,12 @@ public class Channel {
     @JoinColumn(name = "user_id")
     private User user; // 소유자
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "channel_id")
-    private List<InvitedUserChannel> invitedUserChannels; //초대된 유저
+    private List<InvitedUserChannel> invitedUserChannels;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "channel_id")
+    private List<Message> messages;//초대된 유저
 
     public Channel(ChannelRequestDto channelRequestDto, List<InvitedUserChannel> invitedUserChannels, User user) {
         this.channelName = channelRequestDto.getChannelName();

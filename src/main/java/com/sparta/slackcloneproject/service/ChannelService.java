@@ -9,7 +9,7 @@ import com.sparta.slackcloneproject.model.User;
 import com.sparta.slackcloneproject.repository.ChannelRepository;
 import com.sparta.slackcloneproject.repository.InvitedUserChannelRepository;
 import com.sparta.slackcloneproject.repository.UserRepository;
-import com.sun.xml.bind.v2.TODO;
+import com.sparta.slackcloneproject.socket.MessageRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -26,13 +26,15 @@ public class ChannelService {
     private final ChannelRepository channelRepository;
     private final UserRepository userRepository;
     private final InvitedUserChannelRepository invitedUserChannelRepository;
+    private final MessageRepository messageRepository;
 
     public ChannelService(ChannelRepository channelRepository,
                           UserRepository userRepository,
-                          InvitedUserChannelRepository invitedUserChannelRepository) {
+                          InvitedUserChannelRepository invitedUserChannelRepository, MessageRepository messageRepository) {
         this.channelRepository = channelRepository;
         this.userRepository = userRepository;
         this.invitedUserChannelRepository = invitedUserChannelRepository;
+        this.messageRepository = messageRepository;
     }
 
     //채널 생성
@@ -125,7 +127,8 @@ public class ChannelService {
         if (!channel.getUser().getId().equals(user.getId())) {
             throw new IllegalArgumentException("채널 생성자가 아닙니다.");
         }
-        invitedUserChannelRepository.deleteAll(invitedUserChannelRepository.findAllByChannel(channel));
+        // invitedUserChannelRepository.deleteAll(invitedUserChannelRepository.findAllByChannel(channel));
+        // messageRepository.deleteByChannel(channel);
         channelRepository.delete(channel);
         return new ResponseEntity<>(new ResponseDto<>(true, "채널 삭제 성공!!"), HttpStatus.OK);
     }

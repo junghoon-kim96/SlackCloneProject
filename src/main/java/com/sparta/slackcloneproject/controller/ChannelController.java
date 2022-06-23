@@ -23,9 +23,6 @@ public class ChannelController {
     @PostMapping("/api/channel")
     public ResponseEntity<ResponseDto<?>> createChannel(@RequestBody ChannelRequestDto channelRequestDto,
                                                         @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        if (userDetails == null) {
-            throw new IllegalArgumentException("로그인이 필요합니다");
-        }
         User user = userDetails.getUser();
         return channelService.createChannel(channelRequestDto, user);
     }
@@ -35,9 +32,6 @@ public class ChannelController {
     public ResponseEntity<ResponseDto<?>> readUsers(@RequestParam String nickname,
                                                     @RequestParam(required = false) Long channelId,
                                                     @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        if (userDetails == null) {
-            throw new IllegalArgumentException("로그인이 필요합니다");
-        }
         return channelService.readUsers(nickname, channelId, userDetails.getUser());
     }
 
@@ -45,9 +39,6 @@ public class ChannelController {
     //채널 목록 조회
     @GetMapping("/api/channelList")
     public ResponseDto<?> readChannels(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        if (userDetails == null) {
-            throw new IllegalArgumentException("로그인이 필요합니다");
-        }
         User user = userDetails.getUser();
         return channelService.readChannels(user);
     }
@@ -56,9 +47,6 @@ public class ChannelController {
     @DeleteMapping("/api/channel/{channelId}")
     public ResponseEntity<ResponseDto<?>> deleteChannelId(@PathVariable Long channelId,
                                                           @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        if (userDetails == null) {
-            throw new IllegalArgumentException("로그인이 필요합니다");
-        }
         User user = userDetails.getUser();
         return channelService.deleteChannel(channelId, user);
     }
@@ -67,9 +55,6 @@ public class ChannelController {
     @DeleteMapping("/api/channelExit/{channelId}")
     public ResponseEntity<ResponseDto<?>> exitChannel(@PathVariable Long channelId,
                                                       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        if (userDetails == null) {
-            throw new IllegalArgumentException("로그인이 필요합니다");
-        }
         User user = userDetails.getUser();
         return channelService.exitChannel(channelId, user);
     }

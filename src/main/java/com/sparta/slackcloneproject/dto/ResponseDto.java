@@ -16,7 +16,7 @@ public class ResponseDto<T> {
     private boolean response;
     private String message;
     private List<T> list;
-    private Userinfo userinfo;
+    private UserListDto userinfo;
 
     private ChannelResultDto result;
     private Long userId;
@@ -28,8 +28,8 @@ public class ResponseDto<T> {
         this.message = message;
     }
 
-    public ResponseDto(boolean reponse, Userinfo userinfo, String message) {
-        this.response = reponse;
+    public ResponseDto(boolean response, UserListDto userinfo, String message) {
+        this.response = response;
         this.userinfo = userinfo;
         this.message = message;
     }

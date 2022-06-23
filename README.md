@@ -2,7 +2,19 @@
 
 ## 프로젝트 소개 😁
 
-슬랙에 실시간 채팅기능을 주된 기능구현의 목적으로 클론 코딩하였습니다! 
+소통의 목적을 둔 Slack이란 프로그램의 실시간 채팅기능을 중점적으로 클론 코딩하였습니다! 
+
+
+## 👨‍💻 프로젝트 기간
+
+2022년 6월 17일 ~ 2022년 6월 23일 (총 7일)
+
+
+## 👍SLACK clond coding TEAM👍 
+
+- 최성우(front)  - 김정훈(backend Team Leader)
+- 하율찬(front)  - 김이안(backend) 
+                - 김창규(backend) 
 
 
 ---
@@ -13,12 +25,16 @@
 <p align="center">
 
 <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=white">
- <img src="https://img.shields.io/badge/java.js-000000?style=for-the-badge&logo=java.js&logoColor=black">
-<img src="https://img.shields.io/badge/React-47A248?style=for-the-badge&logo=React&logoColor=white"> 
+<img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white">
+ <img src="https://img.shields.io/badge/React-47A248?style=for-the-badge&logo=React&logoColor=white"> 
+<img src="https://img.shields.io/badge/spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white">
+<img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
+<img src="https://img.shields.io/badge/java.js-000000?style=for-the-badge&logo=java.js&logoColor=black">
 <img src="https://img.shields.io/badge/socket.js-339933?style=for-the-badge&logo=socket.js&logoColor=white">
 <img src="https://img.shields.io/badge/stomp.js-000000?style=for-the-badge&logo=stomp.js&logoColor=white">
-<img src="https://img.shields.io/badge/intellj -000000?style=for-the-badge&logo=stomp.js&logoColor=black">
 
+
+ 
 
 
   <br>
@@ -29,25 +45,39 @@
 <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=grey">
 <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=grey">
 <img src="https://img.shields.io/badge/Docker-000000?style=for-the-badge&logo=Docker&logoColor=black">
+ <img src="https://img.shields.io/badge/intellj -000000?style=for-the-badge&logo=stomp.js&logoColor=black">
+<img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
+
   <br>
 </div>
 
 
 ---
-## 👨‍💻 프로젝트 기간
+## 🛠️ API설계
+https://www.notion.so/f51b9434be934799b5f07f8c3184802d?v=f06c8a4112c74a15897e1f90f999bc3e
+
+## 🗃️DB테이블
+![db2](https://user-images.githubusercontent.com/105117965/175256412-3424177e-9315-4479-a2b1-4fa624e48d6d.png)
 
 
-2022년 6월 17일 ~ 2022년 6월 23일 (총 7일)
 
----
+
 ## 🎞 와이어 프레임
-<br/>
+<로그인 페이지>
+![로그인페이지11](https://user-images.githubusercontent.com/105117965/175261180-225a2c28-d6e5-4ed8-9653-efc32b11299f.png)
+
+<로그인 페이지>
+![회원가입페이지11](https://user-images.githubusercontent.com/105117965/175261312-9f5d48e4-8b59-4b2e-af85-60f25f1d3a5d.png)
+
+<메인 페이지>
+![메인페이지11](https://user-images.githubusercontent.com/105117965/175261439-ef21e11b-4e93-4f6f-8e74-52b31413cb1f.png)
+
+
 
 ---
 ##  실제 슬랙  
 <img src="https://user-images.githubusercontent.com/107375500/175225603-3b4cd83d-2b60-4df2-867b-b890899faa18.gif" width="400" height="300">
 
----
 ##  클론 슬랙  
 <img src="https://user-images.githubusercontent.com/107375500/175224632-38570521-6163-4394-ad58-c627627535eb.gif" width="500" height="350">
 
@@ -87,12 +117,7 @@
 - 프로필 창
 
  
----
-## 👍SLACK clond coding TEAM👍 
 
-- 최성우(front)  -김정훈(backend Team Leader)
-- 하율찬(front) - 김이안(backend) 
-                - 김창규(backend) 
 
 ---
 ## Trouble Shooting ❌
